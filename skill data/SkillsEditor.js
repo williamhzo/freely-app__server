@@ -1,18 +1,27 @@
 var fs = require("fs");
-var skillsRaw = require("./Skills1.json");
-// var skillsProcessed = require("./SkillsProcessed.json");
+var readFile = "./skillsRaw.json";
+var writeFile = "./skills_02.json";
 
-// console.log(skillsRaw);
-
-fs.readFile("./Skills1.json", function (err, data) {
+fs.readFile(readFile, function (err, data) {
   const rawData = JSON.parse(data);
   const newArray = [];
   rawData.forEach((item) => {
-    newArray.push(decodeURIComponent(item));
+    item = decodeURIComponent(item);
+    let regex = /-/gi;
+    item = item.replace(regex, " ");
+    const itemArray = item.split(" ");
+    const newItemArray = [];
+    itemArray.forEach((word) => {
+      let regex = /^[a-z]/;
+      let newWord = word.replace(regex, function (match) {
+        return match.toUpperCase();
+      });
+      newItemArray.push(newWord);
+    });
+    const title = newItemArray.join(" ");
+    newArray.push(title);
   });
-  fs.writeFile("./SkillsProcessed.json", JSON.stringify(newArray), function (
-    err
-  ) {
+  fs.writeFile(writeFile, JSON.stringify(newArray), function (err) {
     console.log(err);
   });
 });
