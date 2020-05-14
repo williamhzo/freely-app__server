@@ -42,8 +42,20 @@ app.use(function (req, res, next) {
 
 const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
+const usersRouter = require("./routes/users");
+const collabsRouter = require("./routes/collabs");
+const skillsRouter = require("./routes/skills");
+const categoriesRouter = require("./routes/categories");
+// Sam is dumb 👇
+// const users_usernameRouter = require("./routes/users_username");
 
 app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/collabs", collabsRouter);
+app.use("/api/skills", skillsRouter);
+app.use("/api/categories", categoriesRouter);
+// Sam is dumb 👇
+// app.use("/", users_usernameRouter);
 
 module.exports = app;
