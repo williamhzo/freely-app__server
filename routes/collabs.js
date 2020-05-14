@@ -31,14 +31,6 @@ router.post("/", (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-// Show one Collab edit page
-
-router.get("/:id/edit", (req, res, next) => {
-  Collab.findById(req.params.id)
-    .then((dbRes) => res.status(200).json(dbRes))
-    .catch((err) => console.log(err));
-});
-
 // Edit one Collab
 
 router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {

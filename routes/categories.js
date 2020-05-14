@@ -1,5 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Item = require("./../models/Item");
+const Category = require("./../models/Category");
 
 module.exports = router;
