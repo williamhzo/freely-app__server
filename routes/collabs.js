@@ -25,7 +25,7 @@ router.get("/:id", (req, res, next) => {
 
 // Create one Collab
 
-router.post("/", (req, res, next) => {
+router.post("/", uploadCloud.single("image"), (req, res, next) => {
   Collab.create(req.body)
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
