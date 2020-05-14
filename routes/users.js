@@ -9,10 +9,16 @@ const uploadCloud = require("../config/cloudinaryConfig.js");
 
 router.get("/", (req, res, next) => {
   User.find({})
-    .then((dbRes) => {
-      res.status(200).json(dbRes);
-    })
-    .catch((err) => console.log(err));
+    .then((dbRes) => res.status(200).json(dbRes))
+    .catch((err) => res.status(500).json(err));
+});
+
+// Create one user
+
+router.post("/", uploadCloud.single("image"), (req, res, next) => {
+  User.create(req.body)
+    .then((dbRes) => res.status(200).json(dbRes))
+    .catch((err) => res.status(500).json(err));
 });
 
 // Get one user
@@ -22,14 +28,6 @@ router.get("/:id", (req, res, next) => {
     .then((dbRes) => {
       res.status(200).json(dbRes);
     })
-    .catch((err) => console.log(err));
-});
-
-// Show one user edit page
-
-router.get("/:id/edit", (req, res, next) => {
-  User.findById(req.params.id)
-    .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });
 
