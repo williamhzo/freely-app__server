@@ -1,7 +1,7 @@
 require("dotenv").config();
-require("./../config/dbConnection");
-const express = require("express");
+require("../config/dbConnection");
 const User = require("../models/User");
+
 const users = [
   {
     name: "Sam Littlefair",
