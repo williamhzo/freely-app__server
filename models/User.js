@@ -6,7 +6,7 @@ const userSchema = new Schema({
   userName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  phone: Number,
+  phone: String,
   profilePicture: {
     type: String,
     default: "https://image.flaticon.com/icons/png/512/1738/1738760.png",
@@ -30,18 +30,25 @@ const userSchema = new Schema({
       link: String,
     },
   ],
-  userCategory: {
-    type: Schema.Types.ObjectId,
-    ref: "Category",
-  },
-  userSkills: {
-    type: Schema.Types.ObjectId,
-    ref: "Skills",
-  },
-  userCollab: {
-    type: Schema.Types.ObjectId,
-    ref: "Collabs",
-  },
+  // userCategory: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: "Category",
+  //   },
+  // ],
+  userCategory: [String],
+  userSkills: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Skills",
+    },
+  ],
+  userCollab: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Collabs",
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);
