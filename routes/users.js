@@ -11,7 +11,8 @@ const uploadCloud = require("../config/cloudinaryConfig.js");
 // Get all users
 
 router.get("/", (req, res, next) => {
-  User.find({})
+  console.log(req.query);
+  User.find(req.query)
     .populate({ path: "userCategory", model: Category })
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
