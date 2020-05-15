@@ -1,19 +1,19 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const User = require("../models/User");
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
 
 const salt = 10;
 
-router.post("/signin", (req, res, next) => {
+router.post('/signin', (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email }).then((userDocument) => {
     if (!userDocument) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
     const isValidPassword = bcrypt.compareSync(password, userDocument.password);
     if (!isValidPassword) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
     const userObj = userDocument.toObject();
     delete userObj.password;
@@ -22,16 +22,16 @@ router.post("/signin", (req, res, next) => {
   });
 });
 
-router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body;
+router.post('/signup', (req, res, next) => {
+  const { email, password, userName, name } = req.body;
 
   User.findOne({ email }).then((userDocument) => {
     if (userDocument) {
-      return res.status(400).json({ message: "Email already taken" });
+      return res.status(400).json({ message: 'Email already taken' });
     }
 
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const newUser = { email, lastName, firstName, password: hashedPassword };
+    const newUser = { email, name, userName, password: hashedPassword };
 
     User.create(newUser).then((newUserDocument) => {
       const userObj = newUserDocument.toObject();
@@ -42,7 +42,7 @@ router.post("/signup", (req, res, next) => {
   });
 });
 
-router.get("/isLoggedIn", (req, res, next) => {
+router.get('/isLoggedIn', (req, res, next) => {
   if (req.session.currentUser) {
     const id = req.session.currentUser._id;
     User.findById(id)
@@ -55,14 +55,14 @@ router.get("/isLoggedIn", (req, res, next) => {
         res.status(401).json(error);
       });
   } else {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: 'Unauthorized' });
   }
 });
 
-router.get("/logout", (req, res, next) => {
+router.get('/logout', (req, res, next) => {
   req.session.destroy(function (error) {
     if (error) res.status(500).json(error);
-    else res.status(200).json({ message: "Succesfully disconnected." });
+    else res.status(200).json({ message: 'Successfully disconnected.' });
   });
 });
 
