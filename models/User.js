@@ -30,13 +30,12 @@ const userSchema = new Schema({
       link: String,
     },
   ],
-  // userCategory: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: "Category",
-  //   },
-  // ],
-  userCategory: [String],
+  userCategory: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
   userSkills: [
     {
       type: Schema.Types.ObjectId,

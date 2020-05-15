@@ -1,6 +1,20 @@
 require("dotenv").config();
 require("../config/dbConnection");
 const User = require("../models/User");
+const Skill = require("../models/Skill");
+const Category = require("../models/Category");
+let skills;
+let categories;
+
+const randomSkill = (skills) => {
+  let skill = skills[Math.floor(Math.random() * skills.length)];
+  return skill._id;
+};
+
+const randomCategory = (categories) => {
+  let category = categories[Math.floor(Math.random() * categories.length)];
+  return category._id;
+};
 
 const users = [
   {
@@ -22,7 +36,7 @@ const users = [
     location: "Halifax, Canada",
     remote: true,
     private: false,
-    userCategory: ["Full Stack Web Developer", "Chef"],
+
     portfolio: [
       {
         image:
@@ -61,7 +75,7 @@ const users = [
     location: "Paris, France",
     remote: true,
     private: false,
-    userCategory: ["Full Stack Web Developer", "Ninja Instructor"],
+
     portfolio: [
       {
         image:
@@ -108,7 +122,7 @@ const users = [
     location: "London, England",
     remote: false,
     private: true,
-    userCategory: ["Wizard"],
+
     portfolio: [
       {
         image:
@@ -139,7 +153,7 @@ const users = [
     location: "London, England",
     remote: false,
     private: false,
-    userCategory: ["Wizard"],
+
     portfolio: [
       {
         image:
@@ -187,7 +201,7 @@ const users = [
     location: "Lyon, France",
     remote: false,
     private: false,
-    userCategory: ["Knitter", "Ski Instructor"],
+
     portfolio: [
       {
         image:
@@ -231,7 +245,7 @@ const users = [
     location: "Springfield, Illinois",
     remote: true,
     private: false,
-    userCategory: ["Nuclear Safety Inspector"],
+
     portfolio: [
       {
         image:
@@ -253,69 +267,30 @@ const users = [
   },
 ];
 
-User.deleteMany({}, function (err, res) {
-  if (err) {
+async function seedUsers() {
+  try {
+    await User.deleteMany({}, (err, res) => console.log(err, res));
+    let skills = await Skill.find({});
+    let categories = await Category.find({});
+    users.forEach(async (user, index) => {
+      try {
+        user.userSkills = [
+          randomSkill(skills),
+          randomSkill(skills),
+          randomSkill(skills),
+        ];
+        user.userCategory = [];
+        user.userCategory.push(randomCategory(categories));
+        if (index % 2 === 0) user.userCategory.push(randomCategory(categories));
+        const dbRes = await User.create(user);
+        console.log(dbRes);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  } catch (err) {
     console.log(err);
-  } else {
-    console.log(res);
   }
-  User.insertMany(users)
-    .then((dbRes) => console.log(dbRes))
-    .catch((err) => console.log(err));
-});
+}
 
-// users.forEach((user) => {
-//   console.log("foreach");
-//   User.create(user)
-//     .then((dbRes) => console.log(dbRes))
-//     .catch((err) => console.log(err));
-// });
-
-/*
-
-Leela's gonna kill me. Oh dear! , and he's an idiot! Well, that's love for you. I just want to talk. It has nothing to do with mating. Fry, that doesn't make sense. Interesting. No, wait, the other thing: tedious.
-
- You want to die?! When will that be? Yeah, lots of people did. You've killed me! Oh, you've killed me! And yet you haven't said what I told you to say! How can any of us trust you?
-
-You don't know how to do any of those. My fellow Earthicans, as I have explained in my book 'Earth in the Balance'', and the much more popular ''Harry Potter and the Balance of Earth', we need to defend our planet against pollution. Also dark wizards.
-
-I found what I need. And it's not friends, it's things. Ok, we'll go deliver this crate like professionals, and then we'll go ride the bumper cars. I don't want to be rescued. Say it in Russian!
-
-And remember, don't do anything that affects anything, unless it turns out you were supposed to, in which case, for the love of God, don't not do it! Yes, if you make it look like an electrical fire. When you do things right, people won't be sure you've done anything at all.
-
-No, of course not. It was… uh… porno. Yeah, that's it. Look, everyone wants to be like Germany, but do we really have the pure strength of 'will'? Quite possible. We live long and are celebrated poopers.
-
-So I really am important? How I feel when I'm drunk is correct? Large bet on myself in round one. We'll need to have a look inside you with this camera. WINDMILLS DO NOT WORK THAT WAY! GOOD NIGHT! Michelle, I don't regret this, but I both rue and lament it.
-
-Alright, let's mafia things up a bit. Joey, burn down the ship. Clamps, burn down the crew. Goodbye, cruel world. Goodbye, cruel lamp. Goodbye, cruel velvet drapes, lined with what would appear to be some sort of cruel muslin and the cute little pom-pom curtain pull cords. Cruel though they may be…
-
-That's not soon enough! Kif, I have mated with a woman. Inform the men. Bender! Ship! Stop bickering or I'm going to come back there and change your opinions manually! Uh, is the puppy mechanical in any way?
-
-No! The cat shelter's on to me. Whoa a real live robot; or is that some kind of cheesy New Year's costume? I'm a thing. Take me to your leader! Incidentally, you have a dime up your nose.
-
-
-
-// assign random skills
-
-+33 93 877 5964
-+33 93 435 6926
-+33 93 138 3818
-+33 93 481 7662
-+33 93 544 9576
-+1-613-555-0187
-+1-613-555-0144
-+1-613-555-0186
-+1-613-555-0196
-+1-613-555-0101
-+44 1632 960886
-+44 1632 960041
-+44 1632 960240
-+44 1632 960839
-+44 1632 960988
-+91 385 111 5764
-+91 385 033 5775
-+91 385 041 1044
-+91 385 611 5866
-+91 385 513 1914
-
-*/
+seedUsers();

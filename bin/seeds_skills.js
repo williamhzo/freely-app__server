@@ -10,12 +10,15 @@ Skill.deleteMany({}, function (err, res) {
   } else {
     console.log(res);
   }
-  skillsFile.forEach((skill) => {
-    const skillObject = {};
-    skillObject.name = skill;
-    console.log(skillObject);
-    Skill.create(skillObject)
-      .then((dbRes) => console.log(dbRes))
-      .catch((err) => console.log(err));
+  skillsFile.forEach(async (skill) => {
+    try {
+      const skillObject = {};
+      skillObject.name = skill;
+      console.log(skillObject);
+      const dbRes = await Skill.create(skillObject);
+      console.log(dbRes);
+    } catch (err) {
+      console.log(err);
+    }
   });
 });
