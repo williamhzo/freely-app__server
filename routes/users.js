@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Category = require("../models/Category");
+const Skill = require("../models/Skill");
+const Collab = require("../models/Collab");
 const multer = require("multer");
 const upload = multer();
 const uploadCloud = require("../config/cloudinaryConfig.js");
@@ -9,6 +12,9 @@ const uploadCloud = require("../config/cloudinaryConfig.js");
 
 router.get("/", (req, res, next) => {
   User.find({})
+    .populate({ path: "userCategory", model: Category })
+    .populate({ path: "userSkills", model: Skill })
+    .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => res.status(500).json(err));
 });
@@ -25,6 +31,9 @@ router.post("/", uploadCloud.single("image"), (req, res, next) => {
 
 router.get("/:id", (req, res, next) => {
   User.findById(req.params.id)
+    .populate({ path: "userCategory", model: Category })
+    .populate({ path: "userSkills", model: Skill })
+    .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => {
       res.status(200).json(dbRes);
     })
@@ -42,6 +51,9 @@ router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
   User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   })
+    .populate({ path: "userCategory", model: Category })
+    .populate({ path: "userSkills", model: Skill })
+    .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });

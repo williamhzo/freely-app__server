@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Collab = require("./../models/Collab");
+const User = require("../models/User");
+const Category = require("../models/Category");
+const Skill = require("../models/Skill");
 const multer = require("multer");
 const upload = multer();
 const uploadCloud = require("../config/cloudinaryConfig.js");
@@ -9,6 +12,10 @@ const uploadCloud = require("../config/cloudinaryConfig.js");
 
 router.get("/", (req, res, next) => {
   Collab.find({})
+    .populate({ path: "creator", model: User })
+    .populate({ path: "contributors", model: User })
+    .populate({ path: "skillsNeeded", model: Skill })
+    .populate({ path: "categoryNeeded", model: Category })
     .then((dbRes) => {
       res.status(200).json(dbRes);
     })
@@ -19,6 +26,10 @@ router.get("/", (req, res, next) => {
 
 router.get("/:id", (req, res, next) => {
   Collab.findById(req.params.id)
+    .populate({ path: "creator", model: User })
+    .populate({ path: "contributors", model: User })
+    .populate({ path: "skillsNeeded", model: Skill })
+    .populate({ path: "categoryNeeded", model: Category })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });
@@ -27,6 +38,10 @@ router.get("/:id", (req, res, next) => {
 
 router.post("/", uploadCloud.single("image"), (req, res, next) => {
   Collab.create(req.body)
+    .populate({ path: "creator", model: User })
+    .populate({ path: "contributors", model: User })
+    .populate({ path: "skillsNeeded", model: Skill })
+    .populate({ path: "categoryNeeded", model: Category })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });
@@ -42,6 +57,10 @@ router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
   Collab.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   })
+    .populate({ path: "creator", model: User })
+    .populate({ path: "contributors", model: User })
+    .populate({ path: "skillsNeeded", model: Skill })
+    .populate({ path: "categoryNeeded", model: Category })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });
