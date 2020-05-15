@@ -86,22 +86,49 @@ async function seedCollabs() {
     let skills = await Skill.find({});
     let categories = await Category.find({});
     let users = await User.find({});
+    users.forEach(async (user) => {
+      await User.findByIdAndUpdate(user._id, { userCollab: [] });
+    });
     collabs.forEach(async (collab, index) => {
-      collab.contributors = [];
-      collab.skillsNeeded = [];
-      collab.categoryNeeded = [];
-      collab.creator = randomUser(users);
-      collab.contributors.push(randomUser(users));
-      if (index % 2 > 0) collab.contributors.push(randomUser(users));
-      if (index % 3 > 1) collab.contributors.push(randomUser(users));
-      collab.skillsNeeded.push(randomSkill(skills));
-      collab.skillsNeeded.push(randomSkill(skills));
-      collab.skillsNeeded.push(randomSkill(skills));
-      collab.categoryNeeded.push(randomCategory(categories));
-      if (index % 2 === 0)
+      try {
+        collab.contributors = [];
+        collab.skillsNeeded = [];
+        collab.categoryNeeded = [];
+        collab.creator = randomUser(users);
+        collab.contributors.push(randomUser(users));
+        if (index % 2 > 0) collab.contributors.push(randomUser(users));
+        if (index % 3 > 1) collab.contributors.push(randomUser(users));
+        collab.skillsNeeded.push(randomSkill(skills));
+        collab.skillsNeeded.push(randomSkill(skills));
+        collab.skillsNeeded.push(randomSkill(skills));
         collab.categoryNeeded.push(randomCategory(categories));
-      const dbRes = await Collab.create(collab);
-      console.log(dbRes);
+        if (index % 2 === 0)
+          collab.categoryNeeded.push(randomCategory(categories));
+        const dbRes = await Collab.create(collab);
+        // update creator
+        const user = await User.findById(collab.creator);
+        const userCollab = [...user.userCollab];
+        userCollab.push(dbRes._id);
+        await User.findByIdAndUpdate(collab.creator, {
+          userCollab: userCollab,
+        });
+        // update collaborators
+        collab.contributors.forEach(async (contributor) => {
+          try {
+            const user = await User.findById(contributor);
+            const userCollab = [...user.userCollab];
+            userCollab.push(dbRes._id);
+            await User.findByIdAndUpdate(user._id, {
+              userCollab: userCollab,
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        });
+        console.log(dbRes);
+      } catch (err) {
+        console.log(err);
+      }
     });
   } catch (err) {
     console.log(err);
