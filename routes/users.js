@@ -49,6 +49,7 @@ router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
   } else {
     delete req.body.image;
   }
+  console.log(req.body);
   User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   })

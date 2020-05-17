@@ -30,7 +30,9 @@ router.get("/:id", (req, res, next) => {
     .populate({ path: "contributors", model: User })
     .populate({ path: "skillsNeeded", model: Skill })
     .populate({ path: "categoryNeeded", model: Category })
-    .then((dbRes) => res.status(200).json(dbRes))
+    .then((dbRes) => {
+      res.status(200).json(dbRes);
+    })
     .catch((err) => console.log(err));
 });
 
