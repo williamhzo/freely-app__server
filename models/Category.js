@@ -9,6 +9,7 @@ const categorySchema = new Schema({
       ref: "Skills",
     },
   ],
+  currentlyInUse: Boolean,
 });
 
 const Category = mongoose.model("Category", categorySchema);

@@ -7,6 +7,7 @@ const skillSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
+  currentlyInUse: Boolean,
 });
 
 const Skill = mongoose.model("Skill", skillSchema);
