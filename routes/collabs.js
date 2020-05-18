@@ -39,6 +39,20 @@ router.get("/:id", (req, res, next) => {
 // Create one Collab
 
 router.post("/", uploadCloud.single("image"), (req, res, next) => {
+  if (req.body.contributors) {
+    req.body.contributors = JSON.parse(req.body.contributors);
+  }
+  if (req.body.skillsNeeded) {
+    req.body.skillsNeeded = JSON.parse(req.body.skillsNeeded);
+  }
+  if (req.body.categoryNeeded) {
+    req.body.categoryNeeded = JSON.parse(req.body.categoryNeeded);
+  }
+  if (req.file) {
+    req.body.image = req.file.secure_url;
+  } else {
+    delete req.body.image;
+  }
   Collab.create(req.body)
     .populate({ path: "creator", model: User })
     .populate({ path: "contributors", model: User })
@@ -51,6 +65,15 @@ router.post("/", uploadCloud.single("image"), (req, res, next) => {
 // Edit one Collab
 
 router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
+  if (req.body.contributors) {
+    req.body.contributors = JSON.parse(req.body.contributors);
+  }
+  if (req.body.skillsNeeded) {
+    req.body.skillsNeeded = JSON.parse(req.body.skillsNeeded);
+  }
+  if (req.body.categoryNeeded) {
+    req.body.categoryNeeded = JSON.parse(req.body.categoryNeeded);
+  }
   if (req.file) {
     req.body.image = req.file.secure_url;
   } else {

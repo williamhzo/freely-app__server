@@ -48,6 +48,8 @@ const userSchema = new Schema({
       ref: "Collabs",
     },
   ],
+  openToProjects: Boolean,
+  preferredContact: String,
 });
 
 const User = mongoose.model("User", userSchema);

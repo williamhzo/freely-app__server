@@ -44,6 +44,18 @@ router.get("/:id", (req, res, next) => {
 // Edit one user
 
 router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
+  if (req.body.portfolio) {
+    req.body.portfolio = JSON.parse(req.body.portfolio);
+  }
+  if (req.body.userCategory) {
+    req.body.userCategory = JSON.parse(req.body.userCategory);
+  }
+  if (req.body.userSkills) {
+    req.body.userSkills = JSON.parse(req.body.userSkills);
+  }
+  if (req.body.userCollab) {
+    req.body.userCollab = JSON.parse(req.body.userCollab);
+  }
   if (req.file) {
     req.body.image = req.file.secure_url;
   } else {
