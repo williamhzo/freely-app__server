@@ -43,7 +43,7 @@ router.get("/:id", (req, res, next) => {
 
 // Edit one user
 
-router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
+router.patch("/:id", uploadCloud.single("profilePicture"), (req, res, next) => {
   if (req.body.portfolio) {
     req.body.portfolio = JSON.parse(req.body.portfolio);
   }
@@ -57,9 +57,9 @@ router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
     req.body.userCollab = JSON.parse(req.body.userCollab);
   }
   if (req.file) {
-    req.body.image = req.file.secure_url;
+    req.body.profilePicture = req.file.secure_url;
   } else {
-    delete req.body.image;
+    delete req.body.profilePicture;
   }
   User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
