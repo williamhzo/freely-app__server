@@ -8,6 +8,37 @@ const multer = require("multer");
 const upload = multer();
 const uploadCloud = require("../config/cloudinaryConfig.js");
 
+function updateUsers(collab, contributors) {
+  User.find({ userCollab: collab }).then((dbRes) => {
+    // remove old contributors from array
+    dbRes.forEach((user) => {
+      if (!contributors.includes(user)) {
+        let slicedCollabs = [...user.userCollab].filter(
+          (item) => item != collab
+        );
+        User.findByIdAndUpdate(user._id, {
+          userCollab: slicedCollabs,
+        });
+      }
+    });
+    // add new contributors to array
+    contributors.forEach((contributor) => {
+      User.findById(contributor).then((dbRes) => {
+        if (!dbRes.userCollab.includes(collab)) {
+          User.findByIdAndUpdate(
+            contributor,
+            { $push: { userCollab: collab } },
+            { safe: true, upsert: true },
+            function (err) {
+              err && console.log(err);
+            }
+          );
+        }
+      });
+    });
+  });
+}
+
 // Get all Collabs
 
 router.get("/", (req, res, next) => {
@@ -67,6 +98,7 @@ router.post("/", uploadCloud.single("image"), (req, res, next) => {
 router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
   if (req.body.contributors) {
     req.body.contributors = JSON.parse(req.body.contributors);
+    updateUsers(req.params.id, req.body.contributors);
   }
   if (req.body.skillsNeeded) {
     req.body.skillsNeeded = JSON.parse(req.body.skillsNeeded);
