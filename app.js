@@ -58,4 +58,9 @@ app.use('/api/categories', categoriesRouter);
 // Sam is dumb 👇
 // app.use("/", users_usernameRouter);
 
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 module.exports = app;
