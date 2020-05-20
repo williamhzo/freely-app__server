@@ -7,6 +7,7 @@ const Message = require("../models/Message");
 
 router.get("/user/:id", (req, res, next) => {
   Message.find({ recipients: req.params.id })
+    .populate("recipients")
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => res.status(500).json(err));
 });
@@ -15,6 +16,7 @@ router.get("/user/:id", (req, res, next) => {
 
 router.get("/message/:id", (req, res, next) => {
   Message.findById(req.params.id)
+    .populate("recipients")
     .then((dbRes) => {
       res.status(200).json(dbRes);
     })
