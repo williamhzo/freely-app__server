@@ -60,9 +60,9 @@ app.use('/api/messages', messagesRouter);
 // Sam is dumb 👇
 // app.use("/", users_usernameRouter);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client_shark-attack/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client_shark-attack/build/index.html'));
+// });
 
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
