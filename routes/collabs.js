@@ -85,10 +85,6 @@ router.post("/", uploadCloud.single("image"), (req, res, next) => {
     delete req.body.image;
   }
   Collab.create(req.body)
-    .populate({ path: "creator", model: User })
-    .populate({ path: "contributors", model: User })
-    .populate({ path: "skillsNeeded", model: Skill })
-    .populate({ path: "categoryNeeded", model: Category })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
 });
