@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon ./bin/www",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "preinstall": "echo --- preinstall --- && cd server_shark-attack && npm install && cd ../client_shark-attack && npm install && npm run build && cd .."
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
