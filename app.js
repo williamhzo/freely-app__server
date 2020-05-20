@@ -61,7 +61,7 @@ app.use('/api/messages', messagesRouter);
 // app.use("/", users_usernameRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client_shark-attack/build/index.html'));
 });
 
 app.use((req, res, next) => {
