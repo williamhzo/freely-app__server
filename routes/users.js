@@ -7,7 +7,7 @@ const Collab = require("../models/Collab");
 const multer = require("multer");
 const upload = multer();
 const uploadCloud = require("../config/cloudinaryConfig.js");
-const updateFilters = require("./../bin/updateFilters.js");
+const updateFiltersUsers = require("../bin/updateFiltersUsers.js");
 
 // Get all users
 
@@ -100,12 +100,11 @@ router.patch("/:id", uploadCloud.any(), (req, res, next) => {
     .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
-  updateFilters.categories();
   if (req.body.userSkills) {
-    updateFilters.skills();
-    updateFilters.skills();
+    updateFiltersUsers.skills();
   }
   if (req.body.userCategory) {
+    updateFiltersUsers.categories();
   }
 });
 

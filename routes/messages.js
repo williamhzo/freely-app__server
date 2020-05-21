@@ -57,7 +57,9 @@ router.get("/unread/:userid", (req, res, next) => {
           thread.messages.shift();
           if (thread.unread) {
             let lastMessage = thread.messages[thread.messages.length - 1];
-            if (lastMessage.author !== req.params.userid) {
+            if (lastMessage.author == req.params.userid) {
+              unread = false;
+            } else {
               unread = true;
             }
           }

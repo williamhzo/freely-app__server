@@ -10,6 +10,7 @@ const categorySchema = new Schema({
     },
   ],
   currentlyInUse: Boolean,
+  currentlyInUseOnCollabs: Boolean,
 });
 
 const Category = mongoose.model("Category", categorySchema);

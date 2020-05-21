@@ -8,11 +8,12 @@ const Category = require("../models/Category");
 let allCategories = [];
 
 const categories = () => {
+  console.log("Categories");
   let allCategories = [];
-  User.find({})
+  Collab.find({})
     .then((dbRes) => {
-      dbRes.forEach((user) => {
-        user.userCategory.forEach((category) => {
+      dbRes.forEach((collab) => {
+        collab.categoryNeeded.forEach((category) => {
           if (!allCategories.includes(category._id)) {
             allCategories.push(category._id);
           }
@@ -26,14 +27,16 @@ const categories = () => {
               allCategories.includes(
                 JSON.parse(JSON.stringify(category._id))
               ) &&
-              !category.currentlyInUse
+              !category.currentlyInUseOnCollabs
             ) {
-              Category.findByIdAndUpdate(category._id, { currentlyInUse: true })
+              Category.findByIdAndUpdate(category._id, {
+                currentlyInUseOnCollabs: true,
+              })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (category.currentlyInUse) {
+            } else if (category.currentlyInUseOnCollabs) {
               Category.findByIdAndUpdate(category._id, {
-                currentlyInUse: false,
+                currentlyInUseOnCollabs: false,
               })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
@@ -47,10 +50,10 @@ const categories = () => {
 
 const skills = () => {
   let allSkills = [];
-  User.find({})
+  Collab.find({})
     .then((dbRes) => {
-      dbRes.forEach((user) => {
-        user.userSkills.forEach((skill) => {
+      dbRes.forEach((collab) => {
+        collab.skillsNeeded.forEach((skill) => {
           if (!allSkills.includes(skill._id)) {
             allSkills.push(skill._id);
           }
@@ -62,13 +65,17 @@ const skills = () => {
           dbRes.forEach((skill) => {
             if (
               allSkills.includes(JSON.parse(JSON.stringify(skill._id))) &&
-              !skill.currentlyInUse
+              !skill.currentlyInUseOnCollabs
             ) {
-              Skill.findByIdAndUpdate(skill._id, { currentlyInUse: true })
+              Skill.findByIdAndUpdate(skill._id, {
+                currentlyInUseOnCollabs: true,
+              })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (skill.currentlyInUse) {
-              Skill.findByIdAndUpdate(skill._id, { currentlyInUse: false })
+            } else if (skill.currentlyInUseOnCollabs) {
+              Skill.findByIdAndUpdate(skill._id, {
+                currentlyInUseOnCollabs: false,
+              })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
             }
