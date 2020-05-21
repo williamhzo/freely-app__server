@@ -28,11 +28,13 @@ router.post('/signup', (req, res, next) => {
     return res.status(400).json({ message: 'Password is too short' });
   }
   User.findOne({ email, userName }).then((userDocument) => {
-    console.log('userDocument: ', userDocument.email);
-    if (userDocument.email === email) {
-      return res.status(400).json({ message: 'Email already taken' });
-    } else if (userDocument.userName === userName) {
-      return res.status(400).json({ message: 'Username already taken' });
+    // console.log('userDocument: ', userDocument.email);
+    if (userDocument) {
+      if (userDocument.email === email) {
+        return res.status(400).json({ message: 'Email already taken' });
+      } else if (userDocument.userName === userName) {
+        return res.status(400).json({ message: 'Username already taken' });
+      }
     }
 
     const hashedPassword = bcrypt.hashSync(password, salt);
