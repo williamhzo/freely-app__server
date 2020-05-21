@@ -69,4 +69,19 @@ router.get("/unread/:userid", (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
+// Mark as read
+
+router.patch("/unread/:messageid", (req, res, next) => {
+  Message.findByIdAndUpdate(
+    req.params.messageid,
+    { unread: false },
+    { new: true }
+  )
+    .then((dbRes) => {
+      console.log(dbRes);
+      res.status(200).json(dbRes);
+    })
+    .catch((err) => res.status(500).json(err));
+});
+
 module.exports = router;
