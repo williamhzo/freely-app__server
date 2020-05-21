@@ -37,7 +37,6 @@ router.post("/new/:id1/:id2", (req, res, next) => {
 
 // Add one message
 router.post("/message/:id", (req, res, next) => {
-  console.log(req.params.id);
   Message.findByIdAndUpdate(
     req.params.id,
     { $push: { messages: req.body }, unread: true },
@@ -58,7 +57,6 @@ router.get("/unread/:userid", (req, res, next) => {
           thread.messages.shift();
           if (thread.unread) {
             let lastMessage = thread.messages[thread.messages.length - 1];
-            console.log(lastMessage);
             if (lastMessage.author !== req.params.userid) {
               unread = true;
             }
@@ -67,7 +65,7 @@ router.get("/unread/:userid", (req, res, next) => {
       }
       res.status(200).json(unread);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).json(err));
 });
 
 // Mark as read
@@ -79,7 +77,6 @@ router.patch("/unread/:messageid", (req, res, next) => {
     { new: true }
   )
     .then((dbRes) => {
-      console.log(dbRes);
       res.status(200).json(dbRes);
     })
     .catch((err) => res.status(500).json(err));
