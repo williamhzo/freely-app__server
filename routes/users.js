@@ -13,6 +13,7 @@ const updateFilters = require("./../bin/updateFilters.js");
 
 router.get("/", (req, res, next) => {
   User.find(req.query)
+    .select("-password -email -phone")
     .populate({ path: "userCategory", model: Category })
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
@@ -48,6 +49,8 @@ router.get("/:id", (req, res, next) => {
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => {
+      console.log(dbRes.password);
+      dbRes.password = null;
       res.status(200).json(dbRes);
     })
     .catch((err) => console.log(err));

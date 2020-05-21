@@ -48,7 +48,7 @@ router.post("/signup", async (req, res, next) => {
       password: hashedPassword,
       userCategory,
     };
-
+    console.log(newUser);
     User.create(newUser).then((newUserDocument) => {
       const userObj = newUserDocument.toObject();
       delete userObj.password;
