@@ -28,7 +28,7 @@ router.get("/message/:id", (req, res, next) => {
 router.post("/new/:id1/:id2", (req, res, next) => {
   Message.create({
     recipients: [req.params.id1, req.params.id2],
-    unread: true,
+    unread: false,
     messages: [{ ...req.body, time: Date.now() }],
   })
     .then((dbRes) => res.status(200).json(dbRes))
@@ -45,6 +45,28 @@ router.post("/message/:id", (req, res, next) => {
   )
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => res.status(500).json(err));
+});
+
+// Check unread
+
+router.get("/unread/:userid", (req, res, next) => {
+  Message.find({ recipients: req.params.userid })
+    .then((dbRes) => {
+      let unread = false;
+      if (dbRes) {
+        dbRes.forEach((thread) => {
+          thread.messages.pop();
+          if (thread.unread) {
+            let lastMessage = thread.messages[thread.messages.length - 1];
+            if (!lastMessage.author == req.params.userid) {
+              unread = true;
+            }
+          }
+        });
+      }
+      res.status(200).json(unread);
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;
