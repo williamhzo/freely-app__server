@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+=======
+const bcrypt = require("bcrypt");
+const User = require("../models/User");
+const Category = require("../models/Category");
+>>>>>>> sam
 
 const salt = 10;
 
@@ -23,7 +29,9 @@ router.post('/signin', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  const { email, password, userName, name } = req.body;
+  let category = await Category.find({ name: "Freelancer" });
+  req.body.userCategory = [category[0]._id];
+  const { email, password, userName, name, userCategory } = req.body;
   if (password.length < 5) {
     return res.status(400).json({ message: 'Password is too short' });
   }
@@ -36,7 +44,13 @@ router.post('/signup', (req, res, next) => {
     }
 
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const newUser = { email, name, userName, password: hashedPassword };
+    const newUser = {
+      email,
+      name,
+      userName,
+      password: hashedPassword,
+      userCategory,
+    };
 
     User.create(newUser).then((newUserDocument) => {
       const userObj = newUserDocument.toObject();

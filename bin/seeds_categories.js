@@ -9,32 +9,80 @@ const randomSkill = (skills) => {
   return skill._id;
 };
 
-const categories = [
-  {
-    name: "Web Developer",
-  },
-  {
-    name: "Designer",
-  },
-  {
-    name: "Ski Instructor",
-  },
-  {
-    name: "Marketer",
-  },
-  {
-    name: "Knitter",
-  },
-  {
-    name: "Writer",
-  },
-  {
-    name: "Editor",
-  },
-  {
-    name: "Social Media Manager",
-  },
+const categoryArray = [
+  "Freelancer",
+  "Accountant",
+  "Advertising Specialist",
+  "Android Developer",
+  "Animator",
+  "App Designer",
+  "App Developer",
+  "Artist",
+  "Artistic Director",
+  "Back-End Developer",
+  "Brand Designer",
+  "Cartoonist",
+  "Character Artist",
+  "Content Creator",
+  "Content Marketer",
+  "Content Strategist",
+  "Copywriter",
+  "Data Analyst",
+  "Data Scientist",
+  "Designer",
+  "Dev Ops",
+  "Digital Marketer",
+  "Editor",
+  "Entrepreneur",
+  "Front-End Developer",
+  "Full-Stack Web Developer",
+  "Game Designer",
+  "Ghostwriter",
+  "Graphic Designer",
+  "Illustrator",
+  "iOS Developer",
+  "Journalist",
+  "Knitter",
+  "Market Researcher",
+  "Marketer",
+  "Marketing Strategist",
+  "Mobile Developer",
+  "Motion Designer",
+  "Packaging Designer",
+  "Photo Editor",
+  "Photographer",
+  "Podcaster",
+  "PR Specialist",
+  "Product Designer",
+  "Product Owner",
+  "Product Manager",
+  "Product Strategist",
+  "Project Coordinator",
+  "Project Manager",
+  "Researcher",
+  "Sales Expert",
+  "Ski Instructor",
+  "Social Media Manager",
+  "Software Engineer",
+  "Tax Accountant",
+  "Transcriptionist",
+  "Translator",
+  "UX/UI Designer",
+  "Video Editor",
+  "Videographer",
+  "Visual Researcher",
+  "Voice Actor",
+  "Website Designer",
+  "Web Developer",
+  "Writer",
 ];
+
+const categories = categoryArray.map((category) => {
+  const object = { name: category };
+  return object;
+});
+
+// console.log(categories);
 
 async function seedCategories() {
   try {
@@ -42,11 +90,11 @@ async function seedCategories() {
     await Category.deleteMany({});
     categories.forEach(async (category) => {
       try {
-        category.skills = [
-          randomSkill(skills),
-          randomSkill(skills),
-          randomSkill(skills),
-        ];
+        // category.skills = [
+        //   randomSkill(skills),
+        //   randomSkill(skills),
+        //   randomSkill(skills),
+        // ];
         const dbRes = await Category.create(category);
         console.log(dbRes);
       } catch (err) {
