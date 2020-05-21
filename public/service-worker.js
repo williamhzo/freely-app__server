@@ -11,18 +11,22 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
-
 importScripts(
+<<<<<<< HEAD
 <<<<<<< HEAD
   "/precache-manifest.b803e864239f16f58f28a0a98d352282.js"
 =======
   "/precache-manifest.2ef952441cd55139212fa775d01ff854.js"
 >>>>>>> 0c90c00d708d6f123d27217f87d8998b86073f3c
+=======
+  "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js"
+>>>>>>> f03117a0bfaf7d4d14814b625998bc37f9836e05
 );
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+importScripts("/precache-manifest.2ef952441cd55139212fa775d01ff854.js");
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });
@@ -37,7 +41,9 @@ workbox.core.clientsClaim();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/index.html"), {
-  
-  blacklist: [/^\/_/,/\/[^\/?]+\.[^\/]+$/],
-});
+workbox.routing.registerNavigationRoute(
+  workbox.precaching.getCacheKeyForURL("/index.html"),
+  {
+    blacklist: [/^\/_/, /\/[^\/?]+\.[^\/]+$/],
+  }
+);
