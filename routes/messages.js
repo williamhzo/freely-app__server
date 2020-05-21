@@ -58,6 +58,7 @@ router.get("/unread/:userid", (req, res, next) => {
           thread.messages.pop();
           if (thread.unread) {
             let lastMessage = thread.messages[thread.messages.length - 1];
+            console.log(lastMessage);
             if (!lastMessage.author == req.params.userid) {
               unread = true;
             }
