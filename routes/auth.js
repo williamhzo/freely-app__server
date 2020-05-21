@@ -1,25 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-<<<<<<< HEAD
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
-=======
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Category = require("../models/Category");
->>>>>>> sam
 
 const salt = 10;
 
-router.post('/signin', (req, res, next) => {
+router.post("/signin", (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email }).then((userDocument) => {
     if (!userDocument) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
     const isValidPassword = bcrypt.compareSync(password, userDocument.password);
     if (!isValidPassword) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
     const userObj = userDocument.toObject();
     delete userObj.password;
@@ -28,19 +23,19 @@ router.post('/signin', (req, res, next) => {
   });
 });
 
-router.post('/signup', (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   let category = await Category.find({ name: "Freelancer" });
   req.body.userCategory = [category[0]._id];
   const { email, password, userName, name, userCategory } = req.body;
   if (password.length < 5) {
-    return res.status(400).json({ message: 'Password is too short' });
+    return res.status(400).json({ message: "Password is too short" });
   }
   User.findOne({ email, userName }).then((userDocument) => {
-    console.log('userDocument: ', userDocument.email);
+    console.log("userDocument: ", userDocument.email);
     if (userDocument.email === email) {
-      return res.status(400).json({ message: 'Email already taken' });
+      return res.status(400).json({ message: "Email already taken" });
     } else if (userDocument.userName === userName) {
-      return res.status(400).json({ message: 'Username already taken' });
+      return res.status(400).json({ message: "Username already taken" });
     }
 
     const hashedPassword = bcrypt.hashSync(password, salt);
@@ -61,7 +56,7 @@ router.post('/signup', (req, res, next) => {
   });
 });
 
-router.get('/isLoggedIn', (req, res, next) => {
+router.get("/isLoggedIn", (req, res, next) => {
   if (req.session.currentUser) {
     const id = req.session.currentUser._id;
     User.findById(id)
@@ -74,14 +69,14 @@ router.get('/isLoggedIn', (req, res, next) => {
         res.status(401).json(error);
       });
   } else {
-    res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).json({ message: "Unauthorized" });
   }
 });
 
-router.get('/logout', (req, res, next) => {
+router.get("/logout", (req, res, next) => {
   req.session.destroy(function (error) {
     if (error) res.status(500).json(error);
-    else res.status(200).json({ message: 'Successfully disconnected.' });
+    else res.status(200).json({ message: "Successfully disconnected." });
   });
 });
 
