@@ -50,7 +50,7 @@ const messagesRouter = require('./routes/messages');
 // Sam is dumb 👇
 // const users_usernameRouter = require("./routes/users_username");
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/collabs', collabsRouter);
