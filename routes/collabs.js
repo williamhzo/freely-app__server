@@ -7,6 +7,7 @@ const Skill = require("../models/Skill");
 const multer = require("multer");
 const upload = multer();
 const uploadCloud = require("../config/cloudinaryConfig.js");
+const updateFiltersCollabs = require("./../bin/updateFiltersCollabs.js");
 
 function updateUsers(collab, contributors) {
   User.find({ userCollab: collab }).then((dbRes) => {
@@ -114,8 +115,16 @@ router.patch("/:id", uploadCloud.single("image"), (req, res, next) => {
     .populate({ path: "contributors", model: User })
     .populate({ path: "skillsNeeded", model: Skill })
     .populate({ path: "categoryNeeded", model: Category })
-    .then((dbRes) => res.status(200).json(dbRes))
+    .then((dbRes) => {
+      res.status(200).json(dbRes);
+    })
     .catch((err) => console.log(err));
+  if (req.body.skillsNeeded) {
+    updateFiltersCollabs.skills();
+  }
+  if (req.body.categoryNeeded) {
+    updateFiltersCollabs.categories();
+  }
 });
 
 // Delete one Collab
