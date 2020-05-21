@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Category = require("../models/Category");
 
 const salt = 10;
 
@@ -22,16 +23,23 @@ router.post("/signin", (req, res, next) => {
   });
 });
 
-router.post("/signup", (req, res, next) => {
-  const { email, password, userName, name } = req.body;
-
+router.post("/signup", async (req, res, next) => {
+  let category = await Category.find({ name: "Freelancer" });
+  req.body.userCategory = [category[0]._id];
+  const { email, password, userName, name, userCategory } = req.body;
   User.findOne({ email }).then((userDocument) => {
     if (userDocument) {
       return res.status(400).json({ message: "Email already taken" });
     }
 
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const newUser = { email, name, userName, password: hashedPassword };
+    const newUser = {
+      email,
+      name,
+      userName,
+      password: hashedPassword,
+      userCategory,
+    };
 
     User.create(newUser).then((newUserDocument) => {
       const userObj = newUserDocument.toObject();
