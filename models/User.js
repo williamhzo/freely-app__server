@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -9,21 +9,22 @@ const userSchema = new Schema({
   phone: String,
   profilePicture: {
     type: String,
-    default: "https://image.flaticon.com/icons/png/512/1738/1738760.png",
+    default:
+      'https://res.cloudinary.com/flextance/image/upload/v1590256337/avatar_open-doodles.png',
   },
   title: String,
   bio: String,
   socialLinks: [String],
   location: String,
   formattedLocation: String,
-  remote: Boolean,
+  remote: { type: Boolean, default: true },
   private: Boolean,
   portfolio: [
     {
       image: {
         type: String,
         default:
-          "https://images.pexels.com/photos/3850200/pexels-photo-3850200.jpeg?cs=srgb&dl=modern-workplace-with-gadgets-and-notebook-on-marble-table-3850200.jpg&fm=jpg",
+          'https://images.pexels.com/photos/3850200/pexels-photo-3850200.jpeg?cs=srgb&dl=modern-workplace-with-gadgets-and-notebook-on-marble-table-3850200.jpg&fm=jpg',
       },
       description: String,
       title: String,
@@ -33,25 +34,25 @@ const userSchema = new Schema({
   userCategory: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
   ],
   userSkills: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Skills",
+      ref: 'Skills',
     },
   ],
   userCollab: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Collabs",
+      ref: 'Collabs',
     },
   ],
   openToProjects: Boolean,
   preferredContact: String,
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
