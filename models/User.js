@@ -9,14 +9,15 @@ const userSchema = new Schema({
   phone: String,
   profilePicture: {
     type: String,
-    default: '../public/media/avatar__blacknwhite.png',
+    default:
+      'https://res.cloudinary.com/flextance/image/upload/v1590255650/avatar__blacknwhite_nycezf.png',
   },
   title: String,
   bio: String,
   socialLinks: [String],
   location: String,
   formattedLocation: String,
-  remote: Boolean,
+  remote: { type: Boolean, default: true },
   private: Boolean,
   portfolio: [
     {
