@@ -13,11 +13,19 @@ const updateFiltersUsers = require("../bin/updateFiltersUsers.js");
 
 router.get("/", (req, res, next) => {
   User.find(req.query)
-    .select("-password -email -phone")
+    .select("-password -phone")
     .populate({ path: "userCategory", model: Category })
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
-    .then((dbRes) => res.status(200).json(dbRes))
+    .then((dbRes) => {
+      if (req.session.currentUser._id == dbRes[0]._id) {
+        res.status(200).json(dbRes);
+      } else {
+        dbRes[0].email = null;
+        console.log(dbRes);
+        res.status(200).json(dbRes);
+      }
+    })
     .catch((err) => res.status(500).json(err));
 });
 
@@ -49,7 +57,6 @@ router.get("/:id", (req, res, next) => {
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => {
-      console.log(dbRes.password);
       dbRes.password = null;
       res.status(200).json(dbRes);
     })
