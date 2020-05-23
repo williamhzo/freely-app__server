@@ -10,7 +10,7 @@ const userSchema = new Schema({
   profilePicture: {
     type: String,
     default:
-      'https://res.cloudinary.com/flextance/image/upload/v1590255650/avatar__blacknwhite_nycezf.png',
+      'https://res.cloudinary.com/flextance/image/upload/v1590256337/avatar_open-doodles.png',
   },
   title: String,
   bio: String,
