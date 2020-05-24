@@ -18,12 +18,14 @@ router.get("/", (req, res, next) => {
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => {
-      if (req.session.currentUser._id == dbRes[0]._id) {
-        res.status(200).json(dbRes);
-      } else {
-        dbRes[0].email = null;
-        res.status(200).json(dbRes);
+      if (req.session.currentUser) {
+        if (req.session.currentUser._id == dbRes[0]._id) {
+          res.status(200).json(dbRes);
+          return;
+        }
       }
+      dbRes[0].email = null;
+      res.status(200).json(dbRes);
     })
     .catch((err) => res.status(500).json(err));
 });
