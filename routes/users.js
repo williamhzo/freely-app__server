@@ -22,7 +22,6 @@ router.get("/", (req, res, next) => {
         res.status(200).json(dbRes);
       } else {
         dbRes[0].email = null;
-        console.log(dbRes);
         res.status(200).json(dbRes);
       }
     })
@@ -95,9 +94,6 @@ router.patch("/:id", uploadCloud.any(), (req, res, next) => {
           break;
       }
     });
-    // console.log(req.files);
-    // console.log(req.body);
-    // req.body.profilePicture = req.file.secure_url;
   }
   User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

@@ -8,7 +8,6 @@ const Category = require("../models/Category");
 let allCategories = [];
 
 const categories = () => {
-  console.log("Categories");
   let allCategories = [];
   Collab.find({})
     .then((dbRes) => {
