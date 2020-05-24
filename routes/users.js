@@ -12,19 +12,22 @@ const updateFiltersUsers = require("../bin/updateFiltersUsers.js");
 // Get all users
 
 router.get("/", (req, res, next) => {
+  console.log(req.query);
   User.find(req.query)
     .select("-password -phone")
     .populate({ path: "userCategory", model: Category })
     .populate({ path: "userSkills", model: Skill })
     .populate({ path: "userCollab", model: Collab })
     .then((dbRes) => {
-      if (req.session.currentUser) {
+      if (!!req.session.currentUser && !!dbRes[0]) {
         if (req.session.currentUser._id == dbRes[0]._id) {
           res.status(200).json(dbRes);
           return;
         }
       }
-      dbRes[0].email = null;
+      if (dbRes[0]) {
+        dbRes[0].email = null;
+      }
       res.status(200).json(dbRes);
     })
     .catch((err) => res.status(500).json(err));

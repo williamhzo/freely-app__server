@@ -8,7 +8,6 @@ const Category = require("../models/Category");
 let allCategories = [];
 
 const categories = () => {
-  console.log("updating category filters");
   let allCategories = [];
   Collab.find({})
     .then((dbRes) => {
@@ -20,8 +19,6 @@ const categories = () => {
         });
       });
       allCategories = JSON.parse(JSON.stringify(allCategories));
-      console.log("all categories");
-      console.log(allCategories);
       Category.find({})
         .then((dbRes) => {
           dbRes.forEach((category) => {
@@ -31,16 +28,12 @@ const categories = () => {
               ) &&
               !category.currentlyInUseOnCollabs
             ) {
-              console.log("currently in use");
-              console.log(category);
               Category.findByIdAndUpdate(category._id, {
                 currentlyInUseOnCollabs: true,
               })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
             } else if (category.currentlyInUseOnCollabs) {
-              console.log("no longer in use");
-              console.log(category);
               Category.findByIdAndUpdate(category._id, {
                 currentlyInUseOnCollabs: false,
               })
