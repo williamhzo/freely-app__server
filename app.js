@@ -19,6 +19,7 @@ const corsOptions = {
     process.env.FRONT_END_URL,
     process.env.FRONT_END_URL_HTTP,
     "https://maker.ifttt.com",
+    "https://freely.cool",
   ],
   credentials: true,
 };
