@@ -88,6 +88,12 @@ router.post("/", uploadCloud.single("image"), (req, res, next) => {
   Collab.create(req.body)
     .then((dbRes) => res.status(200).json(dbRes))
     .catch((err) => console.log(err));
+  if (req.body.skillsNeeded) {
+    updateFiltersCollabs.skills();
+  }
+  if (req.body.categoryNeeded) {
+    updateFiltersCollabs.categories();
+  }
 });
 
 // Edit one Collab
