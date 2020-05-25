@@ -15,7 +15,12 @@ const cors = require("cors");
  * Middlewares
  */
 const corsOptions = {
-  origin: [process.env.FRONT_END_URL, process.env.FRONT_END_URL_HTTP],
+  origin: [
+    process.env.FRONT_END_URL,
+    process.env.FRONT_END_URL_HTTP,
+    "https://freely--app.herokuapp.com",
+    "https://freely.cool",
+  ],
   credentials: true,
 };
 app.use(cors(corsOptions));
