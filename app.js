@@ -18,6 +18,7 @@ const corsOptions = {
   origin: [
     process.env.FRONT_END_URL,
     process.env.FRONT_END_URL_HTTP,
+    "https://freely--app.herokuapp.com",
     "https://maker.ifttt.com",
     "https://freely.cool",
   ],
