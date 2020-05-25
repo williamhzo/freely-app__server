@@ -19,21 +19,30 @@ const categories = () => {
         });
       });
       allCategories = JSON.parse(JSON.stringify(allCategories));
+      allCategories.map((cat) => console.log(cat));
       Category.find({})
         .then((dbRes) => {
           dbRes.forEach((category) => {
+            console.log(category.name);
             if (
               allCategories.includes(
                 JSON.parse(JSON.stringify(category._id))
               ) &&
               !category.currentlyInUseOnCollabs
             ) {
+              console.log("       set to true");
               Category.findByIdAndUpdate(category._id, {
                 currentlyInUseOnCollabs: true,
               })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (category.currentlyInUseOnCollabs) {
+            } else if (
+              !allCategories.includes(
+                JSON.parse(JSON.stringify(category._id))
+              ) &&
+              category.currentlyInUseOnCollabs
+            ) {
+              console.log("      set to false");
               Category.findByIdAndUpdate(category._id, {
                 currentlyInUseOnCollabs: false,
               })
@@ -71,7 +80,10 @@ const skills = () => {
               })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (skill.currentlyInUseOnCollabs) {
+            } else if (
+              !allSkills.includes(JSON.parse(JSON.stringify(skill._id))) &&
+              skill.currentlyInUseOnCollabs
+            ) {
               Skill.findByIdAndUpdate(skill._id, {
                 currentlyInUseOnCollabs: false,
               })
