@@ -34,7 +34,12 @@ const categories = () => {
               })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (category.currentlyInUse) {
+            } else if (
+              !allCategories.includes(
+                JSON.parse(JSON.stringify(category._id))
+              ) &&
+              category.currentlyInUse
+            ) {
               Category.findByIdAndUpdate(category._id, {
                 currentlyInUse: false,
               })
@@ -70,7 +75,10 @@ const skills = () => {
               Skill.findByIdAndUpdate(skill._id, { currentlyInUse: true })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
-            } else if (skill.currentlyInUse) {
+            } else if (
+              !allSkills.includes(JSON.parse(JSON.stringify(skill._id))) &&
+              skill.currentlyInUse
+            ) {
               Skill.findByIdAndUpdate(skill._id, { currentlyInUse: false })
                 .then((dbRes) => null)
                 .catch((err) => console.log(err));
